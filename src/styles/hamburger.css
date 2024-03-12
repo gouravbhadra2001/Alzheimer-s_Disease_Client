@@ -1,0 +1,21 @@
+.fa-fa-bar {
+    background-color: rgba(0, 0, 0, 0.576);
+    height: 2px;
+    width: 20px;
+}
+
+.hamburger {
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 2px;
+    height: 25px;
+    aspect-ratio: 1/1;
+    cursor: pointer;
+}
+
+.hamburger:hover {
+    background: linear-gradient(to right, rgb(149, 237, 240), rgb(167, 235, 204));
+}

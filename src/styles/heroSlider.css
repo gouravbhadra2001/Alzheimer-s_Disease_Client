@@ -1,0 +1,104 @@
+
+.carousel{
+    height: 600px;
+  
+    
+}
+
+#heroslider
+ {
+    width: 60vw;
+ 
+ 
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 600px;
+    margin: 30px auto;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 5px;
+
+}
+
+#heroSlider h1{
+    text-align: center;
+}
+
+#slideWrite{
+    padding: 10px;
+    width: 50%;
+    margin-inline: 30px;
+
+    margin: auto auto;
+
+}
+
+#sliderTitle{
+    font-size: 20px;
+    padding-block: 40px;
+}
+
+#slideWritedesc{
+    font-size: 10px;
+    text-align: justify;
+}
+
+#cta {
+    border: 1px solid black;
+    padding: 10px;
+    width: fit-content;
+    cursor: pointer;
+    margin-block: 40px;
+}
+
+#cta:hover {
+
+    color: rgb(249, 247, 244);
+    background-color: black;
+}
+
+
+@media only screen and (max-width:960px) {
+
+    #heroslider
+     {
+
+        flex-direction: column;
+        padding-inline: 20px;
+        padding-block: 30px;
+    }
+
+    #heroslider img{
+        height: 70vw;
+        aspect-ratio: 3.25/3;
+    }
+
+    #slideWrite{
+        padding: 5px;
+        width: 100%;
+
+    }
+
+    #sliderTitle{
+        font-size: 30px;
+        padding-block: 40px;
+    }
+
+    #slideWritedesc{
+        font-size: 12px;
+        width: inherit;
+    }
+
+    #cta {
+
+        margin-block: 40px;
+    }
+
+
+}
+
+@media only screen and (max-width:400px) {
+
+    #sliderTitle{
+        font-size: 25px;
+    }}

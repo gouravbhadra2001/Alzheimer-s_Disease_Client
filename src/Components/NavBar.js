@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { ListGroup, Offcanvas, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Card, ListGroup, Offcanvas, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { Collapse } from 'react-bootstrap';
-import LoginModal from './LoginModal';
-import SignupModal from './SigupModal';
+import { useAuth0 } from "@auth0/auth0-react";
+import Avatar from '@mui/material/Avatar';
+import { colors } from '@mui/material';
+
+
 
 const NavBar = () => {
+    const { loginWithRedirect ,   isAuthenticated, logout, user} = useAuth0();
+
 
     const menu_names = ['Home', 'Prediction', 'Gallery', 'About'];
 
@@ -39,12 +44,13 @@ const NavBar = () => {
     const [openGallery, setOpenGallery] = useState(false);
     const [openAbout, setOpenAbout] = useState(false);
 
+    const [showProfileCanvas, setShowProfileCanvas] = useState(false);
 
+    const handleCloseProfileCanvas = () => setShowProfileCanvas(false);
+    const handleShowProfileCanvas = () => setShowProfileCanvas(true);
 
     const active = "active"
 
-    const [loginmodalShow, setloginModalShow] = React.useState(false);
-    const [signupmodalShow, setsignupModalShow] = React.useState(false);
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
     const [showCanvas, setShowCanvas] = useState(false);
 
@@ -68,7 +74,7 @@ const NavBar = () => {
 
 
     return (
-        <div>
+        <div >
             <Offcanvas show={showCanvas} onHide={handleCloseCanvas} >
                 <Offcanvas.Header closeButton>
                     <Offcanvas.Title>Menu</Offcanvas.Title>
@@ -102,11 +108,11 @@ const NavBar = () => {
             </Offcanvas>
             <header>
 
-                <logoham>
-                <img className="Logo" width="50" height="50" src="https://img.icons8.com/ios-filled/50/medical-doctor.png" alt="medical-doctor" />
+               
+                <h1>ATZ</h1>
 
-                    {screenWidth <= 600 && <img width="30" height="30" src="https://img.icons8.com/cotton/64/menu.png" onClick={handleShowCanvas} alt="menu" />}
-                </logoham>
+                   
+                
 
 
                 {screenWidth > 600 &&
@@ -199,26 +205,78 @@ const NavBar = () => {
                     </nav>
                 }
 
+<logoham>
+{
+                     user && isAuthenticated? 
+<div style={{cursor:"pointer"}} onClick={handleShowProfileCanvas}><Avatar alt={user.name} src="/static/images/avatar/3.jpg" /></div>
+ :  <div className='Auth'><div className="SignIn AuthItem"><img width="20" onClick={() => loginWithRedirect()} height="20" src="https://img.icons8.com/ios/50/1A1A1A/enter-2.png" alt="enter-2" /></div></div>
 
-                <div className='Auth'>
-                    <div className="Register AuthItem">
 
-                        <img onClick={() => setsignupModalShow(true)} width="30" height="30" src="https://img.icons8.com/pastel-glyph/64/FFFFFF/add-user-male--v2.png" alt="add-user-male--v2" />
+                   }
+                    
+                   <Offcanvas show={showProfileCanvas} onHide={handleCloseProfileCanvas} placement='end'>
+                   <Offcanvas.Header closeButton>
+  <Offcanvas.Title>
+    
+  </Offcanvas.Title>
+</Offcanvas.Header>
+  <Offcanvas.Body>
+  { user && isAuthenticated ? (
+    <>
+      
+      <br />
+    
+      <ListGroup>
+      { user && isAuthenticated ? (
+      <Card style={{width:"fit-content"}}>
+      <Card.Header><Avatar sx={{ width: 56, height: 56, textAlign: 'center' }} alt={user.name} src={user.name} /></Card.Header>
+      
+        <Card.Body>
+          <Card.Title>{user.name}</Card.Title>
+        </Card.Body>
+      </Card>
+    ) : null }
+    <br />
+        <NavLink style={{textDecoration: "none"}} to="/profile">
+          <ListGroup.Item action>Profile</ListGroup.Item>
+        </NavLink>
+        <NavLink style={{textDecoration: "none"}} to="/dashboard">
+          <ListGroup.Item action>Dashboard</ListGroup.Item>
+        </NavLink>
+        <NavLink style={{textDecoration: "none"}} to="/settings">
+          <ListGroup.Item action>Settings</ListGroup.Item>
+        </NavLink>
+        <NavLink style={{textDecoration: "none"}} to="/reviews">
+          <ListGroup.Item action>Reviews</ListGroup.Item>
+        </NavLink>
+        <NavLink style={{textDecoration: "none"}} to="/contributions">
+          <ListGroup.Item action>Contributions</ListGroup.Item>
+        </NavLink>
+        <a href = "https://chatbotproject-k9sn8twzfyj2gdrtgsvhcy.streamlit.app/" style={{textDecoration: "none"}} >
+          <ListGroup.Item action>Chatbot</ListGroup.Item>
+        </a>
+      </ListGroup>
+    </>
+  ) : null }
+</Offcanvas.Body>
+  <div className="SignOut AuthItem"><img width="35" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })} height="35" src="https://img.icons8.com/ios/50/exit--v1.png" alt="enter-2" /></div>
+</Offcanvas>
 
-                    </div>
-                    <div className="SignIn AuthItem">
-
-                        <img width="35" onClick={() => setloginModalShow(true)} height="35" src="https://img.icons8.com/ios/50/1A1A1A/enter-2.png" alt="enter-2" />
-
-                    </div>
-                </div>
+                    
+      {screenWidth <= 600 &&  <div class="hamburger" onClick={handleShowCanvas}>
+            <span class="fa-fa-bar"></span>
+            <span class="fa-fa-bar"></span>
+            <span class="fa-fa-bar"></span>
+        </div>}
+</logoham>
+               
+                   
             </header>
-            <LoginModal show={loginmodalShow} onHide={() => setloginModalShow(false)} />
-            <SignupModal show={signupmodalShow} onHide={() => setsignupModalShow(false)} />
-
+          
 
         </div>
     );
 }
+
 
 export default NavBar;
