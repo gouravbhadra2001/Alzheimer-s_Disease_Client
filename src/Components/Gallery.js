@@ -1,9 +1,11 @@
 import React from 'react'
+import Chatbot from './Chatbot'
+
 
 const Gallery = () => {
     return (
         <div>
-            
+            <Chatbot/>
         </div>
     )   
     

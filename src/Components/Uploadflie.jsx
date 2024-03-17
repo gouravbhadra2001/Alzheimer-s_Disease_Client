@@ -1,10 +1,18 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Button, Card, Spinner, Alert, Form, InputGroup, ProgressBar, Tabs, Tab, Fade, Row, Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Button, Card, Spinner, Alert, Form, InputGroup, ProgressBar, Tabs, Tab, Fade, Row, Col, OverlayTrigger, Tooltip, Modal, ListGroup } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { ReactTyped } from 'react-typed';
+import Chatbot from './Chatbot';
+
+
+
+
+
+
+
 
 const Uploadfile = () => {
   const [image, setImage] = useState();
@@ -17,7 +25,39 @@ const Uploadfile = () => {
   const [shownResult, setShownResult] = useState(false);
   const [showAccuracyTooltip, setShowAccuracyTooltip] = useState(false);
   const [showConfidenceTooltip, setShowConfidenceTooltip] = useState(false);
+  const [showChatbotModal, setShowChatbotModal] = useState(false)
+  const [selectedQuestion, setSelectedQuestion] = useState(null);
 
+
+const generateQuestions =()=> {
+  let commonQuestions = [
+    'What are the symptoms of Alzheimer\'s disease?',
+    'How is Alzheimer\'s disease diagnosed?',
+    'What are the treatment options for Alzheimer\'s disease?',
+  ];
+
+  if (prediction && prediction.prediction) {
+    const stage = prediction.prediction;
+    const stageQuestions = [
+      `What do you mean by ${stage}?`,
+      `What are the physical symptoms of ${stage}?`,
+      `How to identify from outside of the body whether ${stage} is there?`
+    ];
+
+    commonQuestions = commonQuestions.concat(stageQuestions);
+  }
+
+  return commonQuestions;
+}
+
+   
+  const handleQuestionClick = (question) => {
+    setSelectedQuestion(question);
+  };
+
+
+
+  
   function handleImageUpload(event) {
     setImage(event.target.files[0]);
   }
@@ -88,9 +128,49 @@ const Uploadfile = () => {
   function handlePredictButton() {
     if (prediction != null) setShownResult(true);
   }
+/*
+  function handleAISuggestions(){
+    setShowChatbotModal(true);
+  }
+*/
+
+
+
 
   return (
     <>
+    <Modal
+      show={showChatbotModal}
+      onHide={()=>setShowChatbotModal(false)}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Get AI Suggestions <strong>⚠️</strong>
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <ListGroup>
+          {generateQuestions().map((question, index) => (
+            <ListGroup.Item
+              key={index}
+              action
+              onClick={() => handleQuestionClick(question)}
+            >
+              {question}
+            </ListGroup.Item>
+          ))}
+        </ListGroup>
+        <br />
+        <Chatbot initialInput={selectedQuestion} />
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={()=>setShowChatbotModal(false)}>Close</Button>
+      </Modal.Footer>
+    </Modal>
+
       <ToastContainer />
       <section>
         <Row>
@@ -136,6 +216,7 @@ const Uploadfile = () => {
                     <Card.Title>PREDICTION RESULTS</Card.Title>
                     <Card.Text>
                       {isOk && prediction && (
+                    
                         <Fade in={open} timeout={1000}>
                           <div id="example-fade-tex">
                             <Tabs defaultActiveKey="prediction" transition={false} justify={true} className="mb-3 mx-5 center">
@@ -157,6 +238,9 @@ const Uploadfile = () => {
                                 </OverlayTrigger>
                                 <ProgressBar style={{ height: '24px' }} now={Math.round((prediction.confidence + Number.EPSILON) * 100)} label={`${Math.round((prediction.confidence + Number.EPSILON) * 100)}%`} />
                               </Tab>
+                              <Tab eventKey="aiAssistant" title="AI Assistant">
+    <Button onClick={()=>setShowChatbotModal(true)}>Get Suggestions from our AI</Button>
+    </Tab>
                             </Tabs>
                           </div>
                         </Fade>
@@ -178,13 +262,14 @@ const Uploadfile = () => {
                       )}
                     </Card.Text>
                     {(!shownResult || image) && (
+                
                       <Button
                         variant="success"
                         onClick={() => {
                           try {
                             handlePredict();
                             setIsOk(true);
-                            setShownResult(true); // Set shownResult to true when the prediction is displayed
+                            setShownResult(true); 
                           } catch (error) {
                             setIsOk(false);
                             console.log(error);
@@ -193,6 +278,8 @@ const Uploadfile = () => {
                       >
                         PREDICT
                       </Button>
+                     
+                    
                     )}
                   </Card.Body>
                 </Card>

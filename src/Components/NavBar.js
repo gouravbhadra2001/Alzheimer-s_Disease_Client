@@ -233,6 +233,7 @@ const NavBar = () => {
       
         <Card.Body>
           <Card.Title>{user.name}</Card.Title>
+          <Card.Subtitle>{user.email}</Card.Subtitle>
         </Card.Body>
       </Card>
     ) : null }
