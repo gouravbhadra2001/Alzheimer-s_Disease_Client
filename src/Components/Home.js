@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState , useEffect} from 'react'
 import { Carousel, Card, Row, Col , Container, NavLink, Form, Button} from 'react-bootstrap'
 import "../styles/home.css"
 import { ListGroup } from 'react-bootstrap'
@@ -21,6 +21,95 @@ const Home = () => {
 
   const { loginWithRedirect , isAuthenticated, logout, user} = useAuth0();
   const cardHeight = "300px"
+
+  const [subscribed, setSubscribed] = useState()
+
+  const fetchInsertData = async () => {
+    if (isAuthenticated && user) {
+        try {
+            const response = await fetch("https://alzheimer-s-disease-server-with.onrender.com/getSubscribedData", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "name": user.name,
+                    "email": user.email,
+                })
+            });
+
+            const data = await response.json();
+            console.log("Got data:", data);
+
+            // Set the subscribed state based on the data received
+            setSubscribed(data);
+        } catch (error) {
+            console.error("Error getting user data:", error);
+        }
+    }
+};
+
+const handleSubscribed = async () => {
+  
+        try {
+            const response = await fetch("https://alzheimer-s-disease-server-with.onrender.com/subscribe", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "name": user.name,
+                    "email": user.email,
+                    "subscribed": 1 // You're subscribing, so set subscribed to 1
+                })
+            });
+
+            const data = await response.json();
+            console.log("IsSubscribed:", data);
+
+            // Set the subscribed state based on the data received
+            setSubscribed(1);
+        } catch (error) {
+            console.error("Error subscribing:", error);
+        }
+  
+    await setSubscribed(1)
+}
+
+const handleUnsubscribed = async () => {
+  
+        try {
+            const response = await fetch("https://alzheimer-s-disease-server-with.onrender.com/unsubscribe", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "name": user.name,
+                    "email": user.email,
+                })
+            });
+
+            const data = await response.json();
+            console.log("IsUnsubscribed:", data);
+
+            
+            setSubscribed(0);
+        } catch (error) {
+            console.error("Error unsubscribing:", error);
+        }
+
+    await setSubscribed(0)
+}
+
+useEffect(() => {
+    fetchInsertData();
+  //alert("Hello world")
+});
+
+
+
+
 
 
   const importancePoints = [
@@ -170,8 +259,7 @@ In conclusion, Alzheimer's disease is a progressive condition that affects memor
               <div className="contactDiv">
                 <h3 className="contactTitle footerTitle">Get in Touch</h3>
                 <br />
-                {/* Social Media Icons */}
-                {/* Implement your social media icons here */}
+          
                 <div className="social_media" style={{display:'flex'}}>
                   <NavLink style={{fontSize:"12px", textDecoration: "Underline", color:"rgb(107, 94, 94);"}} className='footerNavItem' to="#" ><img width="24" height="24" src="https://img.icons8.com/fluency/48/facebook-new.png" alt="facebook-new"/></NavLink>
                   <NavLink style={{fontSize:"12px", textDecoration: "Underline", color:"rgb(107, 94, 94);"}} className='footerNavItem' to="#" ><img width="24" height="24" src="https://img.icons8.com/fluency/48/whatsapp.png" alt="whatsapp"/></NavLink>
@@ -181,7 +269,12 @@ In conclusion, Alzheimer's disease is a progressive condition that affects memor
                 <br />
                  <NavLink style={{fontSize:"12px", textDecoration: "Underline", color:"rgb(107, 94, 94);"}} className='footerNavItem' to="/developer-team">Developer Team</NavLink>
                  <br />
-                {isAuthenticated && <Button variant='light' className='btn-sm'>Subscribe</Button>}
+                 {isAuthenticated && subscribed === 0 && (
+    <Button variant='light' onClick={handleSubscribed} className='btn-sm'>Subscribe</Button>
+)}
+{isAuthenticated && subscribed === 1 && (
+    <Button variant='danger' onClick={handleUnsubscribed} className='btn-sm'>Unsubscribe</Button>
+)}
               </div>
             </Col>
           

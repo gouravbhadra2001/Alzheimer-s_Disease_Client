@@ -69,8 +69,40 @@ const NavBar = () => {
         };
     }, []);
 
+   
+        const fetchInsertData = async () => {
+            if (isAuthenticated && user) {
+                try {
+                    console.log("Fetching api ")
+                    const response = await fetch("https://alzheimer-s-disease-server-with.onrender.com/insertData", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            "name": user.name,
+                            "email": user.email,
+                            "subscribed": 0,
+                            "reviews": [],
+                            "predictions": [],
+                            "starval": 0
+                          
+                        })
+                    });
+                    if (response.ok) {
+                        console.log("User data stored successfully");
+                    } else {
+                        console.warn("Failed to store user data:", response.statusText);
+                    }
+                } catch (error) {
+                    console.error("Error storing user data:", error);
+                }
+            }
+        };
 
+   
 
+    
 
 
     return (
@@ -238,6 +270,9 @@ const NavBar = () => {
       </Card>
     ) : null }
     <br />
+    <NavLink style={{textDecoration: "none"}}>
+          <ListGroup.Item action onClick={fetchInsertData}>Save Your Basic Data</ListGroup.Item>
+        </NavLink>
         <NavLink style={{textDecoration: "none"}} to="/profile">
           <ListGroup.Item action>Profile</ListGroup.Item>
         </NavLink>
