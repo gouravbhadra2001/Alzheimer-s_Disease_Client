@@ -70,7 +70,7 @@ const handleSubmitReview = async (e) => {
 
   try {
     if (isAuthenticated && user) {
-      const api = "http://localhost:5000/postReview";
+      const api = "https://alzheimer-s-disease-server-with.onrender.com/postReview";
       const response = await fetch(api, {
         method: "POST",
         headers: {
@@ -97,7 +97,7 @@ const handleSubmitReview = async (e) => {
 const handleSubscribed = async () => {
   
         try {
-            const response = await fetch("http://localhost/5000/subscribe", {
+            const response = await fetch("https://alzheimer-s-disease-server-with.onrender.com/subscribe", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -125,7 +125,7 @@ const handleSubscribed = async () => {
 const handleUnsubscribed = async () => {
   
         try {
-            const response = await fetch("http://localhost/5000/unsubscribe", {
+            const response = await fetch("https://alzheimer-s-disease-server-with.onrender.com/unsubscribe", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
