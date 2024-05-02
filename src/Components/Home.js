@@ -8,7 +8,7 @@ import disor from "../Assets/directionConf.png"
 import lonely from "../Assets/isolation.png"
 import misplace from "../Assets/misplace.png"
 import readProb from "../Assets/difficulty_reading.png"
-import seizure from "../Assets/seizure.png"
+import seizure from "../Assets/Seizure.png"
 import personality from "../Assets/moodSwing.png"
 import "../styles/footer.css"
 import { useAuth0 } from '@auth0/auth0-react'
