@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Card, ListGroup, Offcanvas, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { Collapse } from 'react-bootstrap';
 import { useAuth0 } from "@auth0/auth0-react";
 import Avatar from '@mui/material/Avatar';
 import { colors } from '@mui/material';
-
+import { ActiveContext } from '../App';
 
 
 const NavBar = () => {
@@ -34,6 +34,8 @@ const NavBar = () => {
         "Gallery": "/gallery",
         "About": "/about"
     };
+
+
     const [ishomeHovered, setIshomeHovered] = useState(false);
     const [ispredictionHovered, setIspredictionHovered] = useState(false);
     const [isGalleryHovered, setIsGalleryHovered] = useState(false);
@@ -85,7 +87,8 @@ const NavBar = () => {
                             "subscribed": 0,
                             "reviews": [],
                             "predictions": [],
-                            "starval": 0
+                            "chatHistory":[],
+                            "starval": 0,
                           
                         })
                     });
@@ -100,13 +103,56 @@ const NavBar = () => {
             }
         };
 
+
+   const {activeIndex, setActiveIndex} = useContext(ActiveContext)
+
    
 
+   const handleLogin = () =>{
+    console.log(loginWithRedirect());
     
+   }
+    
+const handleOpenHome = ()=>{
+    setOpenHome(true); setOpenPrediction(false); setOpenGallery(false); setOpenAbout(false) 
+}
+
+const handleOpenPrediction = ()=>{
+    setOpenHome(false); setOpenPrediction(true); setOpenGallery(false); setOpenAbout(false) 
+}
+
+const handleOpenGallery = () =>{
+    setOpenHome(false); setOpenPrediction(false); setOpenGallery(true); setOpenAbout(false) 
+}
+
+const handleOpenAbout = () =>{
+    setOpenHome(false); setOpenPrediction(false); setOpenGallery(false); setOpenAbout(true) 
+}
 
 
+useEffect(() => {
+    switch(activeIndex) {
+        case 0:
+            handleOpenHome();
+            break;
+        case 1:
+            handleOpenPrediction();
+            break;
+        case 2:
+            handleOpenGallery();
+            break;
+        case 3:
+            handleOpenAbout();
+            break;
+        case 4:
+            setOpenHome(false); setOpenPrediction(false); setOpenGallery(false); setOpenAbout(false) 
+        default:
+            break;
+    }
+}, [activeIndex]);
     return (
-        <div >
+        <>
+            <div>
             <Offcanvas show={showCanvas} onHide={handleCloseCanvas} >
                 <Offcanvas.Header closeButton>
                     <Offcanvas.Title>Menu</Offcanvas.Title>
@@ -141,14 +187,14 @@ const NavBar = () => {
             <header>
 
                
-                <h1>ATZ</h1>
+                <h1>APZ</h1>
 
                    
                 
 
 
                 {screenWidth > 600 &&
-                    <nav>
+                    /*<nav>
 
 
                         {<div className={"navItem" + (openHome?" active":"")} key={menu_names[0]} onClick={() => { setOpenHome(true); setOpenPrediction(false); setOpenGallery(false); setOpenAbout(false) }} onMouseEnter={() => { setIshomeHovered(true); setIspredictionHovered(false); setIsGalleryHovered(false); setIsAboutHovered(false) }}
@@ -235,13 +281,101 @@ const NavBar = () => {
 
 
                     </nav>
+                    */
+                    <nav>
+
+{<div className={"navItem" + (openHome?" active":"")} key={menu_names[0]} onClick={ handleOpenHome } onMouseEnter={() => { setIshomeHovered(true); setIspredictionHovered(false); setIsGalleryHovered(false); setIsAboutHovered(false) }}
+    onMouseLeave={() => { setIshomeHovered(false); setIspredictionHovered(false); setIsGalleryHovered(false); setIsAboutHovered(false) }}>
+
+    <NavLink className="menu-btn" to={reqs["Home"]}>
+
+
+        <img width="24" height="24" src={ishomeHovered?iconLinks_white[menu_names[0]]: iconLinks[menu_names[0]]} alt={menu_names[0]} />
+
+        <Collapse className='menu-extended-content' in={ishomeHovered || openHome} dimension="width">
+            <div id="example-collapse-text">
+
+                {menu_names[0]}
+
+            </div>
+        </Collapse>
+    </NavLink>
+
+
+</div>}
+
+
+<div className={"navItem" + (openPrediction?" active":"")} key={menu_names[1]} onClick={handleOpenPrediction} onMouseEnter={() => { setIshomeHovered(false); setIspredictionHovered(true); setIsGalleryHovered(false); setIsAboutHovered(false) }}
+    onMouseLeave={() => { setIshomeHovered(false); setIspredictionHovered(false); setIsGalleryHovered(false); setIsAboutHovered(false) }}>
+
+    <NavLink className="menu-btn" to={reqs["Prediction"]}>
+
+
+        <img width="24" height="24" src={ispredictionHovered?iconLinks_white[menu_names[1]]: iconLinks[menu_names[1]]} alt={menu_names[1]} />
+
+        <Collapse className='menu-extended-content' in={ispredictionHovered || openPrediction} dimension="width">
+            <div id="example-collapse-text">
+
+                {menu_names[1]}
+
+            </div>
+        </Collapse>
+    </NavLink>
+
+
+</div>
+
+<div className={"navItem" + (openGallery?" active":"")} key={menu_names[2]} onClick={handleOpenGallery} onMouseEnter={() => { setIshomeHovered(false); setIspredictionHovered(false); setIsGalleryHovered(true); setIsAboutHovered(false) }}
+    onMouseLeave={() => { setIshomeHovered(false); setIspredictionHovered(false); setIsGalleryHovered(false); setIsAboutHovered(false) }}>
+
+    <NavLink className="menu-btn" to={reqs["Gallery"]}>
+
+
+        <img width="24" height="24" src={isGalleryHovered?iconLinks_white[menu_names[2]]: iconLinks[menu_names[2]]} alt={menu_names[2]} />
+
+        <Collapse className='menu-extended-content' in={isGalleryHovered || openGallery} dimension="width">
+            <div id="example-collapse-text">
+
+                {menu_names[2]}
+
+            </div>
+        </Collapse>
+    </NavLink>
+
+
+</div>
+
+<div className={"navItem" + (openAbout?" active":"")} key={menu_names[3]} onClick={handleOpenAbout} onMouseEnter={() => { setIshomeHovered(false); setIspredictionHovered(false); setIsGalleryHovered(false); setIsAboutHovered(true) }}
+    onMouseLeave={() => { setIshomeHovered(false); setIspredictionHovered(false); setIsGalleryHovered(false); setIsAboutHovered(false) }}>
+
+    <NavLink className="menu-btn" to={reqs["About"]}>
+
+
+        <img width="24" height="24" src={isAboutHovered?iconLinks_white[menu_names[3]]: iconLinks[menu_names[3]]} alt={menu_names[3]} />
+
+        <Collapse className='menu-extended-content' in={isAboutHovered || openAbout} dimension="width">
+            <div id="example-collapse-text">
+
+                {menu_names[3]}
+
+            </div>
+        </Collapse>
+    </NavLink>
+
+
+</div>
+
+
+
+</nav>
+
                 }
 
 <logoham>
 {
                      user && isAuthenticated? 
-<div style={{cursor:"pointer"}} onClick={handleShowProfileCanvas}><Avatar alt={user.name} src="/static/images/avatar/3.jpg" /></div>
- :  <div className='Auth'><div className="SignIn AuthItem"><img width="20" onClick={() => loginWithRedirect()} height="20" src="https://img.icons8.com/ios/50/1A1A1A/enter-2.png" alt="enter-2" /></div></div>
+<div style={{cursor:"pointer"}} onClick={handleShowProfileCanvas}><Avatar alt={user.name} src={user && (user.picture)} /></div>
+ :  <div className='Auth'><div className="SignIn AuthItem"><img width="20" onClick={() => handleLogin()} height="20" src="https://img.icons8.com/ios/50/1A1A1A/enter-2.png" alt="enter-2" /></div></div>
 
 
                    }
@@ -261,7 +395,7 @@ const NavBar = () => {
       <ListGroup>
       { user && isAuthenticated ? (
       <Card style={{width:"fit-content"}}>
-      <Card.Header><Avatar sx={{ width: 56, height: 56, textAlign: 'center' }} alt={user.name} src={user.name} /></Card.Header>
+      <Card.Header><Avatar sx={{ width: 56, height: 56, textAlign: 'center' }} alt={user.name} src={user && (user.picture)} /></Card.Header>
       
         <Card.Body>
           <Card.Title>{user.name}</Card.Title>
@@ -270,6 +404,7 @@ const NavBar = () => {
       </Card>
     ) : null }
     <br />
+   
     <NavLink style={{textDecoration: "none"}}>
           <ListGroup.Item action onClick={fetchInsertData}>Save Your Basic Data</ListGroup.Item>
         </NavLink>
@@ -311,6 +446,9 @@ const NavBar = () => {
           
 
         </div>
+        
+        </>
+        
     );
 }
 

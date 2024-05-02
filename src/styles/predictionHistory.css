@@ -1,0 +1,55 @@
+.predictListItemContainer {
+    border: 1px solid #e0e0e0; /* Light gray border */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    width: fit-content;
+    padding: 10px; /* Spacing inside the card */
+    background-color: #fff; /* White background */
+  }
+
+  /* Header Styling */
+  .predictListItemHeader {
+    border-bottom: 1px solid #e0e0e0; /* Light gray border */
+    display: flex;
+    align-items: center;
+    padding-bottom: 10px; /* Add some space below the header */
+  }
+
+  .predictListItemHeader img {
+    margin-right: 10px;
+  }
+
+  .predictListItemHeader p {
+    margin: 0; /* Remove default margin */
+    font-size: 10px; /* Increase font size */
+    font-weight: normal; /* Bold text */
+    color: #333; /* Dark text color */
+  }
+
+  /* Main Content Styling */
+  .bodyrow {
+    display: flex;
+    align-items: center;
+  }
+
+  .bodycol {
+    flex: 1; /* Equal width columns */
+    padding: 10px; /* Spacing inside columns */
+  }
+
+  .bodycol img {
+    max-width: 500px; /* Ensure images don't overflow */
+    border-radius: 8px; /* Rounded corners for images */
+  }
+
+  .bodycol p {
+    margin: 0; /* Remove default margin */
+    font-size: 16px; /* Font size for text */
+    color: #555; /* Text color */
+  }
+
+  /* Light Text Styling */
+  light {
+    color: #888; /* Light gray text color */
+    font-size: 16px;
+  }

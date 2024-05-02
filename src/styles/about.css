@@ -1,0 +1,195 @@
+
+.aboutTeam{
+    background: linear-gradient(to top, transparent, rgba(165, 248, 221, 0.222), rgba(160, 228, 238, 0.253), transparent);
+
+}
+
+.aboutTeam h1{
+    font-size: 50px;
+    text-align: center;
+}
+.team_thanks{
+  text-align: center;
+}
+.developer {
+    display: flex;
+    flex-wrap: wrap;
+    height: max-content;
+    justify-content: center;
+    align-items: center;
+  
+}
+.developer-card {
+    margin-inline: auto;
+    width: 200px; 
+    height: auto; 
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: rgba(245, 244, 244, 0.25) 0px 54px 55px, rgba(243, 241, 241, 0.12) 0px -12px 30px, rgba(243, 240, 240, 0.12) 0px 4px 6px, rgba(255, 253, 253, 0.17) 0px 12px 13px, rgba(249, 248, 248, 0.09) 0px -3px 5px;
+    margin-bottom: 20px;
+    padding: 2px;
+    margin: 20px 20px;
+   
+}
+
+.developer-card-img {
+    width: 196px;
+    border-radius: 8px;
+    position: absolute;
+    
+}
+
+.developer-card-content {
+    padding: 20px;
+    position: relative;
+    margin-top: 140px;
+    background: linear-gradient(to top, rgb(102, 6, 94), black, rgb(45, 45, 53), transparent);
+    border-radius: 8px;
+}
+
+.developer-card-content *{
+  color: rgb(248, 243, 234);
+
+}
+
+.developer-card-title {
+    font-size: 17px;
+    font-weight: 300;
+    padding-bottom: 5px;
+    
+}
+
+.developer-card-subtitle {
+  font-size: 8px;
+  font-weight: 300;
+  padding-bottom: 5px;
+}
+
+.developer-card-text {
+    
+    font-size: 10px;
+
+}
+.developer-card-divider-1{
+  background-color: rgba(255, 255, 255, 0.543);
+  height: 0.1px;
+  width: 70px;
+}
+.developer-card-divider-2{
+  background-color: rgba(212, 243, 243, 0.623);
+  height: 0.1px;
+  width: 70px;
+  float: right;
+}
+.developer-card-footer{
+  display: flex;
+  width: inherit;
+  
+  justify-content: end;
+  margin-top: 20px;
+}
+
+.developer-card-footer img{
+  height: 15px;
+  width: 15px;
+  margin-left: 5px;
+}
+
+
+.benefit{
+  background: linear-gradient(to bottom,transparent,  rgba(253, 150, 253, 0.247),  rgba(243, 175, 224, 0.247), rgba(249, 138, 205, 0.144), transparent);
+
+
+}
+
+.benefit h1{
+  text-align: center;
+}
+.benefit-doctor-section h2, .benefit-patient-section h2{
+  text-align: center;
+}
+.benefit-patient-section-body, .benefit-doctor-section-body{
+  display: flex;
+flex-wrap: wrap;
+flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  
+}
+
+.benefit-title-img{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+.benefit-patient-img img, .benefit-doctor-img img{
+  height:300px;
+  width: 400px;
+}
+
+.benefit-card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.benefit-card {
+  box-shadow: rgba(139, 241, 243, 0.134) 0px 48px 100px 0px;
+  border-radius: 5px;
+  padding: 20px;
+  width: 200px; 
+  margin: 20px;
+  background-color: rgb(256, 256, 256);
+  cursor: pointer;
+  transform: translateY(10px);
+  transition: transform 0.5s ease-in-out;
+}
+
+.benefit-card:hover{
+  transform: translateY(-10px);
+  transition: transform 0.5s ease-in-out;
+}
+.benefit-card-icon img {
+  display: block;
+  
+}
+
+.benefit-card-heading{
+  font-size: 20px;
+  font-weight: 600;
+  text-align: left;
+  
+}
+
+.benefit-card-text{
+  font-size: 17px;
+  font-weight: 300;
+  text-align: left;
+
+}
+.thanks {
+  background-color: black;
+  margin-bottom: -40px;
+  color: wheat;
+  margin-left:0px;
+  width: 70%;
+  border-top-right-radius: 95%;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: flex-start;
+}
+
+
+
+
+@media (screen) {
+    .aboutTeam h1{
+    font-size: 50px;
+    }
+    
+.meet_our_team{
+    background-color: aqua;
+}
+}

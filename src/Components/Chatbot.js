@@ -4,27 +4,32 @@ import { ThreeDots } from 'react-loader-spinner';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
-const Chatbot = ({ initialInput }) => {
+const Chatbot = ({ initialInput, getQna }) => {
   const [originalInputText, setOriginalInputText] = useState(initialInput || ''); // Store original input text
   const [responseText, setResponseText] = useState('');
-  const [showLoader, setShowLoader] = useState(false)
+  const [showLoader, setShowLoader] = useState(false);
   const [showResponseCard, setShowResponseCard] = useState(false);
 
   useEffect(() => {
     setOriginalInputText(initialInput || ''); // Reset original input text when initialInput prop changes
   }, [initialInput]);
 
+  useEffect(() => {
+    getQna({ question: originalInputText, answer: responseText });
+  }, [originalInputText, responseText]);
+
   const handleInputChange = (event) => {
     setOriginalInputText(event.target.value); // Update original input text
   };
 
   const handleSubmit = async () => {
-    setShowResponseCard(true)
+    setShowResponseCard(true);
     console.log("Original input text:", originalInputText); // Log original input text
 
     // Clear previous response text
     setResponseText('');
-  setShowLoader(true);
+    setShowLoader(true);
+
     // Concatenate original input text with extra string for sending request to the chatbot API
     const inputForApi =
       originalInputText +
@@ -49,6 +54,7 @@ const Chatbot = ({ initialInput }) => {
     }
 
     setResponseText(formattedResponse);
+    setShowLoader(false); // Hide loader once response is received
   };
 
   return (
@@ -64,33 +70,23 @@ const Chatbot = ({ initialInput }) => {
         <Button variant="outline-secondary" onClick={handleSubmit}>Ask</Button>
       </InputGroup>
       {showResponseCard && (
-        <Card style={{padding:"20px"}}>
-    <Card.Title>Result for "{originalInputText}":</Card.Title>
-    {!responseText && showLoader && (
-        
-        <ThreeDots
-          visible={true}
-          height="40"
-          width="40"
-          color="black"
-          radius="100"
-          ariaLabel="three-dots-loading"  
-        />
-       
+        <Card style={{ padding: "20px" }}>
+          <Card.Title>Result for "{originalInputText}":</Card.Title>
+          {!responseText && showLoader && (
+            <ThreeDots
+              visible={true}
+              height="40"
+              width="40"
+              color="black"
+              radius="100"
+              ariaLabel="three-dots-loading"
+            />
+          )}
+          {responseText && (
+            <Markdown remarkPlugins={[remarkGfm]}>{responseText}</Markdown>
+          )}
+        </Card>
       )}
-
-      {responseText && (
-       
-         
-       <Markdown remarkPlugins={[remarkGfm]}>{responseText}</Markdown>  
- 
-   )}
-    </Card>
-      )}
-    
-      
-      
-      
     </div>
   );
 };

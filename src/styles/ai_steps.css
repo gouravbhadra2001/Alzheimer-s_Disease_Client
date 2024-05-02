@@ -1,0 +1,88 @@
+.ai-func-head-underline{
+    width: 100px;
+    height: 2px;
+    margin-top:10px;
+    background-color: red;
+}
+
+.sequence-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+  }
+  
+  .sequence-button {
+    padding-inline: 20px;
+    padding-block: 10px;
+    border: 1.5px solid #000000;
+    border-radius: 50%;
+    background-color: transparent;
+    color: #007bff;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .sequence-button:hover, .sequence-button-selected {
+    background-color: #000000;
+    color: #fff;
+  }
+  
+  .connector{
+    background-color: #000000;
+    width: 100px;
+    height: 2px;
+  }
+  
+
+  .ai-step{
+    padding: 20px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: aliceblue;
+  margin-top: 20px;  }
+
+  .ai-step-image{
+    width: 300px;
+    height: 300px;
+    
+  }
+  .ai-step-name{
+    text-align: right;
+    font-size: 20px;
+  }
+
+  .ai-step-name-underline{
+    width: 50px;
+    height: 2px;
+    margin-block:10px;
+    background-color: rgb(87, 146, 240);
+    margin-inline: auto 0;
+}
+  
+  .ai-step-text{
+    width: 50%;
+  }
+  .ai-step-description{
+    font-size: 14px;
+  }
+
+  .learnMorebtn{
+    background-color: transparent;
+    border-radius: 40px;
+    padding: 10px 20px;
+    font-size: 14px;
+    color: black;
+    transition: background-color 0.3s ease-in-out;
+    border: 1.5px solid rgba(0, 0, 0, 0.752);
+    float: right;
+  }
+
+  .learnMorebtn:hover{
+    color: rgb(248, 236, 214);
+    background-color: rgb(0, 0, 0);
+    transition: background-color 0.3s ease-in-out;
+  }
+  

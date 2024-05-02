@@ -1,58 +1,103 @@
-import React, { useState , useEffect} from 'react'
-import { Carousel, Card, Row, Col , Container, NavLink, Form, Button} from 'react-bootstrap'
+import React, { useState , useEffect, useContext} from 'react'
+import { Carousel, Card, Row, Col , Container,  Form, Button} from 'react-bootstrap'
+
 import "../styles/home.css"
 import { ListGroup } from 'react-bootstrap'
-import memoryloss from "../Assets/Memory Loss.png"
-import disor from "../Assets/Disorientation.png"
-import lonely from "../Assets/Lonely.png"
-import misplace from "../Assets/misplacing.png"
-import readProb from "../Assets/Reading Problem.png"
-import seizure from "../Assets/Seizure.png"
-import personality from "../Assets/Personality Change.png"
+import memoryloss from "../Assets/memoryLoss.png"
+import disor from "../Assets/directionConf.png"
+import lonely from "../Assets/isolation.png"
+import misplace from "../Assets/misplace.png"
+import readProb from "../Assets/difficulty_reading.png"
+import seizure from "../Assets/seizure.png"
+import personality from "../Assets/moodSwing.png"
 import "../styles/footer.css"
 import { useAuth0 } from '@auth0/auth0-react'
 
 import Typewriter from 'typewriter-effect/dist/core';
 import {ReactTyped} from "react-typed";
-
+import { ActiveContext} from '../App';
+import "../styles/symptomCard.css";
+import { NavLink } from 'react-router-dom'
 
 
 const Home = () => {
 
-  const { loginWithRedirect , isAuthenticated, logout, user} = useAuth0();
+  const {activeIndex, setActiveIndex } = useContext(ActiveContext)
+
+  const { /*loginWithRedirect ,*/ isAuthenticated, /*logout,*/ user} = useAuth0();
   const cardHeight = "300px"
 
   const [subscribed, setSubscribed] = useState()
 
-  const fetchInsertData = async () => {
-    if (isAuthenticated && user) {
-        try {
-            const response = await fetch("https://alzheimer-s-disease-server-with.onrender.com/getSubscribedData", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    "name": user.name,
-                    "email": user.email,
-                })
-            });
-
-            const data = await response.json();
-            console.log("Got data:", data);
-
-            // Set the subscribed state based on the data received
-            setSubscribed(data);
-        } catch (error) {
-            console.error("Error getting user data:", error);
-        }
-    }
+ 
+  /*
+const updateContextValue = (subscribed) => {
+  setContextValue(subscribed);
 };
+
+*/
+
+const fetchInsertData = async () => {
+  if (isAuthenticated && user) {
+      try {
+          const response = await fetch("https://alzheimer-s-disease-server-with.onrender.com/getSubscribedData", {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                  "name": user.name,
+                  "email": user.email,
+              })
+          });
+
+          const data = await response.json();
+          console.log("Got data:", data);
+
+          // Set the subscribed state based on the data received
+          setSubscribed(data);
+      } catch (error) {
+          console.error("Error getting user data:", error);
+      }
+  }
+};
+
+
+
+const handleSubmitReview = async (e) => {
+  e.preventDefault();
+  const reviewText = e.target.reviewTextArea.value; 
+
+  try {
+    if (isAuthenticated && user) {
+      const api = "http://localhost:5000/postReview";
+      const response = await fetch(api, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json"
+        },
+        body: JSON.stringify({
+          "name": user.name,
+          "email": user.email,
+          "review": {
+            "reviewText": reviewText,
+            "submit_time": new Date().toISOString() 
+          }
+        })
+      });
+
+      const responseData = await response.json();
+      console.log(responseData);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 const handleSubscribed = async () => {
   
         try {
-            const response = await fetch("https://alzheimer-s-disease-server-with.onrender.com/subscribe", {
+            const response = await fetch("http://localhost/5000/subscribe", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -60,7 +105,7 @@ const handleSubscribed = async () => {
                 body: JSON.stringify({
                     "name": user.name,
                     "email": user.email,
-                    "subscribed": 1 // You're subscribing, so set subscribed to 1
+                    "subscribed": 1 
                 })
             });
 
@@ -76,10 +121,11 @@ const handleSubscribed = async () => {
     await setSubscribed(1)
 }
 
+
 const handleUnsubscribed = async () => {
   
         try {
-            const response = await fetch("https://alzheimer-s-disease-server-with.onrender.com/unsubscribe", {
+            const response = await fetch("http://localhost/5000/unsubscribe", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -103,11 +149,12 @@ const handleUnsubscribed = async () => {
 }
 
 useEffect(() => {
-    fetchInsertData();
-  //alert("Hello world")
+setActiveIndex(0);
+  fetchInsertData();
+  console.log(activeIndex)
+
+//alert("Hello world")
 });
-
-
 
 
 
@@ -138,7 +185,7 @@ useEffect(() => {
       content: 'Provides valuable information to patients and their caregivers, fostering awareness, facilitating proactive healthcare decisions, and improving overall patient well-being.',
     },
   ]
-  return (<>
+  return (<div className='fade-in'>
 <section className='welcome'>
       
       <h1>
@@ -150,39 +197,40 @@ useEffect(() => {
       
     </section>
  <br /><br />
-    <section className='aboutAlz'>
+    <section className='aboutAlz alzInfoSec'>
     
 
-
-      <h2>What is Alzheimer's Disease?</h2>
+      <h2 className='slide-in-bottom1'>What is Alzheimer's Disease?</h2>
       <br />
-      <p>Alzheimer's disease is a type of dementia that affects memory, thinking, and behavior. It is not a normal part of aging and is the most common cause of dementia, accounting for 60-80% of cases
+      <p className='slide-in-bottom2'>Alzheimer's disease is a type of dementia that affects memory, thinking, and behavior. It is not a normal part of aging and is the most common cause of dementia, accounting for 60-80% of cases
 
 . The disease progresses over time, with symptoms worsening gradually. In its early stages, individuals may experience mild memory loss, but in late-stage Alzheimer's, they can lose the ability to communicate and respond to their environment
 
 .</p>
 <div>
 <br />
-    <h3>Symptoms of Alzheimer's Disease:</h3>
+    <h3 className='slide-in-bottom3'>Symptoms of Alzheimer's Disease:</h3>
 <br />
-    <Row>
-      {cardsData.map((card, index) => (
-        <Col md={3} key={index} style={{ marginBottom: '15px' }}>
-          <Card style={{ height: cardHeight, backgroundColor:"black", color: "white"}}>
-            <Card.Img variant="top" src={card.image} alt={card.alt} height="150" width="150" />
-            <Card.Body>
-              <Card.Title style={{fontSize: "15px"}}>
-                <strong>{card.title}</strong>
-              </Card.Title>
-              <Card.Text style={{fontSize: "12px"}}>{card.description}</Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
-      ))}
-    </Row>
-</div>
 
-    <p>Alzheimer's disease has no cure currently; however, there are treatments like aducanumab and lecanemab that can help reduce cognitive decline in early stages
+<div class = 'symp-card-container slide-in-bottom4'>
+      {cardsData.map((card, index) => (
+        <div className = 'symp-card' key={index}>
+            <img className="symp-card-img" src={card.image} alt="img"/>
+            <div className="symp-card-content">
+                <div className="symp-card-title">
+                    {card.title}
+                </div>
+                <div className="symp-card-text">
+                    {card.description}
+                </div>
+            </div>
+        </div>
+      ))}
+    </div>
+</div>
+<br />
+<br />
+    <p className='slide-in-bottom5'>Alzheimer's disease has no cure currently; however, there are treatments like aducanumab and lecanemab that can help reduce cognitive decline in early stages
 
 . Early diagnosis is crucial for planning care needs and considering financial arrangements
 
@@ -197,8 +245,8 @@ In conclusion, Alzheimer's disease is a progressive condition that affects memor
     </section>
 
 
-    <section>
-      <h2>Impotance of AI prediction</h2>
+    <section className='importance_AI_section'>
+      <h2>Importance of AI prediction</h2>
       <br />
       <br />
       <ListGroup as="ol" numbered>
@@ -215,87 +263,140 @@ In conclusion, Alzheimer's disease is a progressive condition that affects memor
   ))}
 </ListGroup>
     </section>
-    <footer className="footer">
-      <Container className='footerContainer'>
-        <Row>
-          {/* First Column */}
-          {isAuthenticated && <Col lg={4} md={6}>
-            <div className="reviewDiv">
-              <h3 className="reviewTitle footerTitle">Review</h3>
-              <Form>
-                <Form.Group controlId="reviewTextArea">
-                  <Form.Control
-                    as="textarea"
-                    rows={3}
-                    placeholder="Please describe your experience."
-                    className='reviewText'
-                  />
-                </Form.Group>
-                <br />
-                <Button className='btn-sm' variant='light' >Submit Review</Button>
-              </Form>
-              {/* 5 Stars with ratings */}
-              {/* Implement your star rating component here */}
-            </div>
-          </Col>}
-
-          <br />
-          <Col lg={4} md={6}>
-            <div className="helpDiv">
-              <h3 className="helpTitle footerTitle">Help</h3>
-              
-                  <NavLink style={{fontSize:"12px", textDecoration: "Underline", color:"rgb(107, 94, 94);"}} className='footerNavItem' to="/faq">FAQ</NavLink>
-                
-                  <NavLink style={{fontSize:"12px", textDecoration: "Underline", color:"rgb(107, 94, 94);"}} className='footerNavItem' to="/user-guidance">User Guidance</NavLink>
-                
-                  <NavLink style={{fontSize:"12px", textDecoration: "Underline", color:"rgb(107, 94, 94);"}} className='footerNavItem' to="/sample-video">Sample Video</NavLink>
-                
-            </div>
-          </Col>
-<br />
-        
-          
-            <Col lg={4} md={6} >
-              <div className="contactDiv">
-                <h3 className="contactTitle footerTitle">Get in Touch</h3>
-                <br />
-          
-                <div className="social_media" style={{display:'flex'}}>
-                  <NavLink style={{fontSize:"12px", textDecoration: "Underline", color:"rgb(107, 94, 94);"}} className='footerNavItem' to="#" ><img width="24" height="24" src="https://img.icons8.com/fluency/48/facebook-new.png" alt="facebook-new"/></NavLink>
-                  <NavLink style={{fontSize:"12px", textDecoration: "Underline", color:"rgb(107, 94, 94);"}} className='footerNavItem' to="#" ><img width="24" height="24" src="https://img.icons8.com/fluency/48/whatsapp.png" alt="whatsapp"/></NavLink>
-                  <NavLink style={{fontSize:"12px", textDecoration: "Underline", color:"rgb(107, 94, 94);"}} className='footerNavItem' to="#" ><img width="24" height="24" src="https://img.icons8.com/color/48/twitter-circled--v1.png" alt="twitter-circled--v1"/></NavLink>
-                  <NavLink style={{fontSize:"12px", textDecoration: "Underline", color:"rgb(107, 94, 94);"}} className='footerNavItem' to="#" ><img width="24" height="24" src="https://img.icons8.com/color/48/instagram-new--v1.png" alt="instagram-new--v1"/></NavLink>
+    <section className="home-footer">
+        <div className="footer-body">
+            <div className="footer-description">
+                <div className="footer-description-logo">
+<h4>LOGO</h4>
                 </div>
-                <br />
-                 <NavLink style={{fontSize:"12px", textDecoration: "Underline", color:"rgb(107, 94, 94);"}} className='footerNavItem' to="/developer-team">Developer Team</NavLink>
-                 <br />
-                 {isAuthenticated && subscribed === 0 && (
-    <Button variant='light' onClick={handleSubscribed} className='btn-sm'>Subscribe</Button>
-)}
-{isAuthenticated && subscribed === 1 && (
-    <Button variant='danger' onClick={handleUnsubscribed} className='btn-sm'>Unsubscribe</Button>
-)}
-              </div>
-            </Col>
-          
-        </Row>
+                <div className="footer-description-text">
+Please check out the quick links to know more about our effort
+                </div>
+                <br/>
+                <div className="quick-contact">
+                    <div className="quick-contact-link">
+                        <img  src="https://img.icons8.com/ios/50/FFFFFF/gmail-new.png" alt="gmail-new"/>
+                        <a href="">bullzeye2023@gmail.com</a>
+                    </div>
+                  
+                    <div className="quick-contact-link">
+                        <img  src="https://img.icons8.com/ios/50/FFFFFF/phone--v1.png" alt="phone--v1"/>
+                        <a href="">+91-1234567891</a>
+                    </div>
+                   
+                </div>
 
-        <br />
-        <div className="footer_bottom">
-        
-          <Row className="copyright">
-        
-          
-            <NavLink style={{fontSize:"12px", textDecoration: "Underline", color:"rgb(107, 94, 94);"}} to="">© Team: BullsEye 2024 </NavLink>
-            <NavLink style={{fontSize:"12px", textDecoration: "Underline", color:"rgb(107, 94, 94);"}} to="">All Rights Reserved </NavLink>
-   
-            
-          </Row>
+            </div>
+            <div className="quick-links-and-subscribe">
+                <div className="quick-links">
+                    <div className="quick-links-head">
+                        <div className="quick-links-head-text">
+QUICK LINKS
+                        </div>
+                        <div className="quick-links-head-underline">
+
+                        </div>
+                    </div>
+                    <ul className="quick-links-body">
+                        <li>
+                            <a href="">Home</a>
+                        </li>
+                        <li>
+                            <a href="">Prediction</a>
+                        </li>
+                        <li>
+                            <a href="">About Us</a>
+                        </li>
+                    </ul>
+                </div>
+                <div className="your-support">
+                    <div className="your-support-head">
+                        <div className="your-support-head-text">
+YOUR SUPPORT
+                        </div>
+                        <div className="your-support-head-underline">
+
+                        </div>
+                    </div>
+                    <ul className="your-support-body">
+                        <li>
+                            <a href="">Donate</a>
+                        </li>
+                        <li>
+                            <a href="">Review</a>
+                        </li>
+                        <li>
+                            <a href="">Support 3</a>
+                        </li>
+                    </ul>
+                </div>
+                <div className="help">
+                    <div className="help-head">
+                        <div className="help-head-text">
+HELP
+                        </div>
+                        <div className="help-head-underline">
+
+                        </div>
+                    </div>
+                    <ul className="help-body">
+                        <li>
+                            <NavLink to="/contact">Contact</NavLink>
+                        </li>
+                        <li>
+                            <a href="">FAQ</a>
+                        </li>
+                        <li>
+                            <a href="">Team</a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div className="subscribe">
+                    <div className="subscribe-head">
+<div className="subscribe-head-text">
+YOUR CONTRIBUTION
+</div>
+<div className="subscribe-head-underline">
+
+</div>
+                    </div>
+                    <div className="subscribe-body">
+                        <div className="subscribe-text">
+Your contribution will help us accelerate the improvement of technology.
+                        </div>
+                        
+
+  <NavLink to='/donate'><div className="donate-button" >
+  <img src="https://img.icons8.com/parakeet-line/96/rupee.png" alt="rupee"/>
+  <p>DONATE</p>
+  
+  </div></NavLink>
+
+
+                        
+                    </div>
+                </div>
+            </div>
+
         </div>
-      </Container>
-    </footer>
+        <div className="divider-underline"></div>
+        <div className="follow">Follow Us</div>
+        <div className="underline-middle"></div>
+        <div className="social-media">
+            <img  src="https://img.icons8.com/ios/50/FFFFFF/facebook-new.png" alt="facebook-new"/>
+            <img  src="https://img.icons8.com/ios/50/FFFFFF/linkedin-circled--v1.png" alt="facebook-circled--v1"/>
+            <img  src="https://img.icons8.com/ios/50/FFFFFF/twitter-circled--v1.png" alt="facebook-circled--v1"/>
+            <img  src="https://img.icons8.com/ios/50/FFFFFF/instagram-new--v1.png" alt="instagram-new--v1"/>
+            <img  src="https://img.icons8.com/ios/50/FFFFFF/github--v1.png" alt="github--v1"/>
+        </div>
+        <div className="underline-middle-2"></div>
+        <div className="copyright">
+<strong>&copy; <a href="">2023,  Team-Bullseye</a></strong>
+        </div>
+    </section>
 
-  </>
+  </div>
   
   
   )
@@ -344,7 +445,7 @@ const cardsData = [
     description: 'Putting things in unusual places and accusing others of stealing as the disease progresses.',
   },
   {
-    title: 'Mood and Personality Changes',
+    title: 'Mood Swing',
     image: personality,
     alt: 'Mood and Personality Changes Image',
     description:

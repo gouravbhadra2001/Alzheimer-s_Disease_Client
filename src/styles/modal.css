@@ -1,0 +1,27 @@
+.modal-footer{
+    width: 100%;
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    
+}
+
+.common-questions {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .common-question-item {
+    cursor: pointer;
+    padding: 10px;
+    border-bottom: 1px solid #cccccca1;
+    transition: background-color 0.3s ease;
+    
+  }
+  
+  .common-question-item:hover {
+    background-color: #f0f0f0;
+    border-inline: 2px solid rgba(0, 0, 0, 0.666);
+  }
+  
+  

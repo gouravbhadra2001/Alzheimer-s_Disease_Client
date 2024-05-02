@@ -1,0 +1,67 @@
+.symp-card-container {
+    display: flex;
+    flex-direction: column;
+    height: max-content;
+    
+}
+
+.symp-card {
+    margin-inline: auto;
+    width: 250px; 
+    height: auto; 
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+    margin-bottom: 20px;
+    padding: 2px;
+    cursor: pointer;
+    transition: transform ease-in-out 0.3s;
+}
+
+.symp-card:hover{
+    transform: scale(1.05, 1.05);
+    transition: transform ease-in-out 0.5s;
+}
+
+.symp-card-img {
+    width: 246px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    position: absolute;
+    
+}
+
+.symp-card-content {
+    padding: 20px;
+    position: relative;
+    margin-top: 150px;
+    background: linear-gradient(to top, white, white, white, white, transparent);
+    border-radius: 8px;
+}
+
+.symp-card-title {
+    padding-block: 10px;
+    font-size: 20px;
+    font-weight: 300;
+    margin-bottom: 10px;
+}
+
+.symp-card-text {
+    text-align: justify;
+    font-size: 12px;
+    padding-bottom: 10px;
+}
+
+/* Media query for medium and larger screens */
+@media (min-width: 768px) {
+    .symp-card-container {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+
+    }
+    
+    .symp-card {
+        margin: 10px;
+    }
+}
