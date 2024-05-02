@@ -262,7 +262,7 @@ const Uploadfile = () => {
   const handleSaveChats = async (question, answer) => {
     try {
       if (isAuthenticated && user) {
-        const api = "http://localhost:5000/postChats";
+        const api = "https://alzheimer-s-disease-server-with.onrender.com/postChats";
         const response = await fetch(api, {
           method: "POST",
           headers: {
