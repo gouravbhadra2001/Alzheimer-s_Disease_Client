@@ -145,7 +145,7 @@ const Uploadfile = () => {
     formData.append('image', image);
     setIsUploaded(false);
     setIsUploading(true)
-    axios.post('http://localhost:8080/upload', formData).then((res) => {
+    axios.post('https://alzheimer-s-disease-server.onrender.com/upload', formData).then((res) => {
       setIsUploaded(true);
       setIsUploading(false);
       SetPostViewImage(URL.createObjectURL(image));
@@ -180,7 +180,7 @@ const Uploadfile = () => {
     setLoading(true);
     try {
       setIsOk(true);
-      axios.get('http://localhost:8080/predict').then((res) => {
+      axios.get('https://alzheimer-s-disease-server.onrender.com/predict').then((res) => {
         setPrediction(res.data);
         setLoading(false);
         setOpen(true);
@@ -220,7 +220,7 @@ const Uploadfile = () => {
   const handleSavePrediction = async (prediction, image, confidence) => {
     try {
       if (isAuthenticated && user) {
-        const api = "http://localhost:5000/postPrediction";
+        const api = "https://alzheimer-s-disease-server-with.onrender.com/postPrediction";
 
         // Convert image to base64 string
         convertImageToBase64(image)
